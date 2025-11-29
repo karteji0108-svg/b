@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function userRole() {
+      return isSignedIn() ? userDoc().data.role : null;
+    }
+
+    function hasRole(r) {
+      return isSignedIn() && userRole() == r;
+    }
+
+    function inRoles(list) {
+      return isSignedIn() && userRole() in list;
+    }
+
+    // users
+    match /users/{uid} {
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      allow read: if inRoles(['super', 'ketua', 'wakil', 'sekretaris', 'bendahara', 'sie']) || (isSignedIn() && request.auth.uid == uid);
+      // Super Admin / Ketua / Wakil dapat mengubah role anggota
+      allow update: if (isSignedIn() && request.auth.uid == uid)
+                    || inRoles(['super', 'ketua', 'wakil']);
+      allow delete: if hasRole('super');
+    }
+
+    // activities
+    match /activities/{id} {
+      allow read: if true;
+      // Sekretaris & Sie ajukan / input kegiatan, Ketua & Super bisa juga
+      allow create: if inRoles(['super', 'ketua', 'sekretaris', 'sie']);
+      // Wakil review, Ketua approve, Super full
+      allow update: if inRoles(['super', 'ketua', 'wakil', 'sekretaris']);
+      // Hapus oleh Super / Ketua
+      allow delete: if inRoles(['super', 'ketua']);
+    }
+
+    // financial_records
+    match /financial_records/{id} {
+      // Transparansi kas dapat dibaca semua (termasuk anggota)
+      allow read: if true;
+      // Bendahara & Super Admin mengelola keuangan
+      allow create, update, delete: if inRoles(['super', 'bendahara']);
+    }
+
+    // announcements
+    match /announcements/{id} {
+      allow read: if true;
+      // Super, Ketua, Sekretaris kelola pengumuman
+      allow create, update, delete: if inRoles(['super', 'ketua', 'sekretaris']);
+    }
+
+    // galleries (foto)
+    match /galleries/{id} {
+      allow read: if true;
+      // Pengurus yang terkait kegiatan dapat mengelola galeri
+      allow create, update, delete: if inRoles(['super', 'ketua', 'sekretaris']);
+    }
+
+    // albums
+    match /albums/{id} {
+      allow read: if true;
+      allow create, update, delete: if inRoles(['super', 'ketua', 'sekretaris']);
+    }
+
+    // default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

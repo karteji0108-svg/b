@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beranda | KARTEJI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <!-- Firebase v8 compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+</head>
+<body class="min-h-full bg-slate-950 text-slate-100 flex flex-col">
+  <div id="navbar-placeholder"></div>
+  <main class="flex-1 container mx-auto px-4 py-6">
+
+    <section class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <p class="text-xs uppercase tracking-[0.3em] text-emerald-400 mb-3">Karang Taruna Cilosari Barat</p>
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">
+          KARTEJI
+          <span class="block text-lg md:text-2xl text-emerald-400 mt-2">Ruang Kreasi, Aksi, dan Kolaborasi Pemuda</span>
+        </h1>
+        <p class="text-slate-300 mb-6 max-w-xl">
+          Website resmi Karang Taruna Cilosari Barat sebagai pusat informasi kegiatan, pengumuman,
+          galeri dokumentasi, dan transparansi keuangan. Dibangun dengan sistem keanggotaan dan
+          dashboard pengurus berbasis Firebase.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="login.html" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm transition">
+            Masuk Anggota
+          </a>
+          <a href="register.html" class="px-4 py-2 rounded-xl border border-slate-700 hover:border-emerald-400 text-sm transition">
+            Daftar Anggota Baru
+          </a>
+          <a href="about.html" class="px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-emerald-400 transition">
+            Tentang KARTEJI →
+          </a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute inset-0 blur-3xl bg-gradient-to-tr from-emerald-500/40 via-sky-500/30 to-purple-500/30 opacity-60"></div>
+        <div class="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-2xl">
+          <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Agenda Terdekat
+          </h2>
+          <div id="home-activities" class="space-y-3 text-sm">
+            <!-- Diisi dari activities.js -->
+          </div>
+          <div class="mt-4 pt-4 border-t border-white/10 flex justify-between text-xs text-slate-400">
+            <a href="activities.html" class="hover:text-emerald-400">Lihat semua kegiatan</a>
+            <a href="announcements.html" class="hover:text-emerald-400">Lihat pengumuman</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>
+
